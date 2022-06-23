@@ -1,0 +1,94 @@
+/* Fundo */
+.background{
+    background-color: white;
+}
+
+/*Conteúdo*/
+.título{
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    margin-top: 35%;
+    margin-left: 10%;
+}
+
+h2{
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 170%;
+    margin-left: 10%;
+
+}
+
+h3{
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 200%;
+    margin-left: 10%;
+    margin-top: 15%;
+}
+
+.retornar{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 200%;
+    margin-top: 15%;
+    float: right;
+}
+
+.retornar:hover{
+    color: red;
+}
+
+p{
+    font-family: 'Roboto', sans-serif;
+    margin-left: 10%;
+}
+
+.link{
+    font-family: 'Roboto', sans-serif;
+    margin-left: 10%;
+}
+
+.row1{
+    width: 45%;
+    float: left;
+}
+
+.row2{
+    margin-top: 8%;
+    width: 50%;
+    float: right;
+}
+
+.espaço{
+    margin-top: 10%;
+    padding-top: 10px;
+}
+
+div.gallery {
+    border-radius: 4px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 25%;
+    margin-left: 17%;
+    margin-top: 10%;
+}
+    
+div.gallery:hover {
+    border: 1px solid red;
+}
+    
+div.gallery img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+    
+div.desc {
+    padding: 15px;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+}
+
+

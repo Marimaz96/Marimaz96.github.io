@@ -1,0 +1,409 @@
+<html>
+    <head>
+        <!-- Importando fontes -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap" rel="stylesheet">
+
+        <!-- Import do CSS -->
+        <link rel="stylesheet" type="text/css" href="portfolio.css">
+
+        <title>Marina Maziero</title>
+    </head>
+
+    <body class = "background">
+
+        <!-- Título -->
+        <div style = "margin-top: 5%;">
+            <h2>Jogo da Memória</h2>
+            <p>Desenvolvido em grupo utilizando a linguagem Python</p>
+        </div>
+
+        <!-- Fotos -->
+        
+            <div>
+                <pre><code class="python" contentEditable="true">
+                    #Grupo 1: Eduardo Josviak, Marina Maziero, Joao Vitor Gabardo da Cunha, Alexandre Cícero, Lincoln Félix
+
+                    #----------------------------------------------------------------------
+                    #Jogo da memoria
+                    #----------------------------------------------------------------------
+
+                    #importando bibliotecas
+                    import random
+                    from random import randint
+                    import time
+
+                    #condições para o while
+                    jogo = False
+                    fase = False
+
+                    #----------------------------------------------------------------------
+                    #criando as matrizes:
+                    matriz_solucao = []
+                    matriz_visivel = []
+
+                    #----------------------------------------------------------------------
+                    #funções validas para todas as dificuldades:
+
+                    #populando matriz visivel:
+                    def criar_visivel (n):
+                        for l in range(0,n):
+                            matriz_visivel.append([])
+                            for c in range(0,n):
+                                matriz_visivel[l].append("#")
+
+                    #populando matriz solução:
+                    def criar_solucao (n):
+                        #criando vetor:
+                        vetor = []
+                        for i in range(0,n*n//2):
+                            n0 = random.randint(65,90)
+                            n1 = chr(n0)
+                            vetor.append(n1)
+
+                        #duplicando vetor para formar pares:
+                        for i in range(0,n*n//2):
+                            vetor.append(vetor[i])
+
+                        #shuffle dos vetores usando o algoritmo de fisher yates:
+                        for i in range ((n*n//2)-1,0,-1):
+                            indice = randint(0,i+1)
+                            vetor[i], vetor[indice] = vetor[indice], vetor[i]
+
+                        #transformar o vetor aleatório em matriz:
+                        a=0
+                        for l in range(0,n):
+                            matriz_solucao.append([])
+                            for c in range(0,n):
+                                matriz_solucao[l].append(vetor[a])
+                                a = a + 1
+
+
+                        #mostrando a matriz solução:
+                        def mostrar_solucao ():
+                            for l in range (0,len(matriz_solucao)):            
+                                print (matriz_solucao[l])
+                                time.sleep(1)
+
+                        #mostrando a matriz visivel:
+                        def mostrar_visivel():
+                            print("\n")
+                            for l in range (0,len(matriz_visivel)):
+                                print (matriz_visivel[l])
+                                time.sleep(1)
+
+                        #para limpar o terminal:
+                        def limpar():
+                            print ("\n" * 130)
+                            mostrar_visivel()    
+                            
+                        #função para visualizar as respostas:
+                        def respostas ():
+                            for l in range(0,len(matriz_solucao)):
+                                print(matriz_solucao[l])
+                            time.sleep(3)
+
+                        #função para zerar contadores:
+                        def zerar():
+                            pontos = 0
+                            ver_respostas = 2
+
+                        #---------------------------------------------------------
+
+                        while jogo != True:
+
+                            #contadores:
+                            #contador de vezes que a resposta pode ser vista:
+                            ver_respostas = 2
+
+                            #contador de acertos:
+                            pontos = 0
+
+                            #----------------------------------------------------------------------
+                            #escolhendo a dificuldade:
+
+                            dificuldade = int(input('Qual dificuldade voce deseja jogar \n 1 - Fácil \n 2 - Medio \n 3 - Difícil \n 0 - Acabar jogo \n'))
+                                    
+                            #----------------------------------------------------------------------
+                            #para acabar o jogo:
+
+                            if (dificuldade == 0):
+                                print("Fim de jogo.")
+                                jogo = True
+
+                            #----------------------------------------------------------------------
+                            # fase fácil:
+
+                            elif dificuldade == 1:
+
+                                #definindo tamanho matriz:
+                                n = 4
+
+                                criar_visivel(n)
+                                criar_solucao(n)
+
+                                #mostrar a solução antes de começar o jogo:
+                                mostrar_solucao()
+                                limpar()
+
+                                    #começando o jogo:
+                                    while (fase != True):
+                                        
+                                        escolha = int(input("\nSe deseja digitar uma sequência digite 0. \nSe deseja visualizar a solução do jogo digite 1. Você pode visualizar a solução 2 vezes durante o jogo.\nPara desistir do jogo digite 2.\n"))
+                                        
+                                        #--------------------------------------------------------------
+                                        #saindo da fase:
+                                        if(escolha == 2):
+                                            print("Você desistiu do jogo. Retornando ao menu.\n")
+                                            fase = True
+                                            zerar()
+                                        
+                                        #--------------------------------------------------------------
+                                        #mostrando as respostas:
+
+                                        elif(escolha == 1 and ver_respostas > 0):
+                                            respostas()
+                                            limpar()
+                                            ver_respostas = ver_respostas - 1
+                                            print("Você só tem ",ver_respostas, "visualizações de resposta restantes.")
+                                        
+                                        #--------------------------------------------------------------
+                                        #esgotado número de vezes que se mostra a resposta:
+
+                                        elif (escolha == 1 and ver_respostas <= 0):
+                                            print("Não há mais visualizações de resposta.")
+                                        
+                                        #--------------------------------------------------------------
+                                        #jogo:
+
+                                        elif(escolha == 0):
+                                            #escolhendo a posição:
+
+                                            linha = int(input("\nDigite o número da linha desejada para a primeira peça:"))
+                                            coluna = int(input("Digite o número da coluna desejada para a primeira peça:"))
+
+                                            linha2 = int(input("\nDigite o número da linha desejada para a segunda peça:"))
+                                            coluna2 = int(input("Digite o número da coluna desejada para a segunda peça:"))
+
+                                            #pq a matriz começa do 0:
+
+                                            l = linha - 1
+                                            c = coluna - 1
+
+                                            l2 = linha2 - 1
+                                            c2 = coluna2 - 1
+
+                                            
+
+                                            #conferindo se as peças são iguais:
+                                            if (matriz_solucao[l][c] == matriz_solucao[l2][c2]):
+                                                matriz_visivel[l][c] = matriz_solucao[l][c]
+                                                matriz_visivel[l2][c2] = matriz_solucao[l2][c2]
+                                                
+                                                pontos = pontos + 2
+                                                
+
+                                            elif (matriz_visivel[l2][c2] != "#" or matriz_visivel[l][c] != "#" or (l == l2 and c == c2)):
+                                                print ("Você já selecionou essa posição, por favor escolha outra.\n")
+                                            
+                                            else:
+                                                print ("Não é par. Tente novamente.\n")
+                        
+                                            #se o número de acertos for igual ao número de elementos na matriz o jogo acaba:
+                                            if(pontos == len(matriz_solucao[l]) * len(matriz_solucao[c])):
+                                                print("Você finalizou o jogo! Parabens!" )
+                                                fase = True
+                                                zerar()
+                                            
+                                            mostrar_visivel()
+                                        
+                                            else:
+                                                print("Escolha uma opção válida.")
+
+                                        #fase média
+                                        elif dificuldade == 2:
+
+                                            #definindo tamanho matriz:
+                                            n = 8
+
+                                            criar_visivel(n)
+                                            criar_solucao(n)
+
+                                            #mostrar a solução antes de começar o jogo:
+                                            mostrar_solucao()
+                                            limpar()
+
+                                            #começando o jogo:
+                                            while (fase != True):
+                        
+                                                escolha = int(input("\nSe deseja digitar uma sequência digite 0. \nSe deseja visualizar a solução do jogo digite 1. Você pode visualizar a solução 2 vezes durante o jogo.\nPara desistir do jogo digite 2.\n"))
+                                                
+                                                #--------------------------------------------------------------
+                                                #saindo da fase:
+                                                if(escolha == 2):
+                                                    print("Você desistiu do jogo. Retornando ao menu.\n")
+                                                    fase = True
+                                                    zerar()
+                                                
+                                                #--------------------------------------------------------------
+                                                #mostrando as respostas:
+
+                                                elif(escolha == 1 and ver_respostas > 0):
+                                                    respostas()
+                                                    limpar()
+                                                    ver_respostas = ver_respostas - 1
+                                                    print("Você só tem ",ver_respostas, "visualizações de resposta restantes.")
+                                                
+                                                #--------------------------------------------------------------
+                                                #esgotado número de vezes que se mostra a resposta:
+
+                                                elif (escolha == 1 and ver_respostas <= 0):
+                                                    print("Não há mais visualizações de resposta.")
+                                                
+                                                #--------------------------------------------------------------
+                                                #jogo:
+
+                                                elif(escolha == 0):
+                                                    #escolhendo a posição:
+
+                                                    linha = int(input("\nDigite o número da linha desejada para a primeira peça:"))
+                                                    coluna = int(input("Digite o número da coluna desejada para a primeira peça:"))
+
+                                                    linha2 = int(input("\nDigite o número da linha desejada para a segunda peça:"))
+                                                    coluna2 = int(input("Digite o número da coluna desejada para a segunda peça:"))
+
+                                                    #pq a matriz começa do 0:
+
+                                                    l = linha - 1
+                                                    c = coluna - 1
+
+                                                    l2 = linha2 - 1
+                                                    c2 = coluna2 - 1
+
+                                                    
+
+                                                    #conferindo se as peças são iguais:
+                                                    if (matriz_solucao[l][c] == matriz_solucao[l2][c2]):
+                                                        matriz_visivel[l][c] = matriz_solucao[l][c]
+                                                        matriz_visivel[l2][c2] = matriz_solucao[l2][c2]
+                                                        
+                                                        pontos = pontos + 2
+                                                        
+
+                                                    elif (matriz_visivel[l2][c2] != "#" or matriz_visivel[l][c] != "#" or (l == l2 and c == c2)):
+                                                        print ("Você já selecionou essa posição, por favor escolha outra.\n")
+                                                    
+                                                    else:
+                                                        print ("Não é par. Tente novamente.\n")
+                                                
+                                                    #se o número de acertos for igual ao número de elementos na matriz o jogo acaba:
+                                                    if(pontos == len(matriz_solucao[l]) * len(matriz_solucao[c])):
+                                                        print("Você finalizou o jogo! Parabens!" )
+                                                        fase = True
+                                                        zerar()
+                                                    
+                                                    mostrar_visivel()
+                                                
+                                                    else:
+                                                        print("Escolha uma opção válida.")
+
+                                            elif dificuldade == 3:
+
+                                                #definindo tamanho matriz:
+                                                n = 10
+
+                                                criar_visivel(n)
+                                                criar_solucao(n)
+
+                                                #mostrar a solução antes de começar o jogo:
+                                                mostrar_solucao()
+                                                limpar()
+
+                                                #começando o jogo:
+                                                while (fase != True):
+                                                    
+                                                    escolha = int(input("\nSe deseja digitar uma sequência digite 0. \nSe deseja visualizar a solução do jogo digite 1. Você pode visualizar a solução 2 vezes durante o jogo.\nPara desistir do jogo digite 2.\n"))
+                                                    
+                                                    #--------------------------------------------------------------
+                                                    #saindo da fase:
+                                                    if(escolha == 2):
+                                                        print("Você desistiu do jogo. Retornando ao menu.\n")
+                                                        fase = True
+                                                        zerar()
+                                                    
+                                                    #--------------------------------------------------------------
+                                                    #mostrando as respostas:
+
+                                                    elif(escolha == 1 and ver_respostas > 0):
+                                                        respostas()
+                                                        limpar()
+                                                        ver_respostas = ver_respostas - 1
+                                                        print("Você só tem ",ver_respostas, "visualizações de resposta restantes.")
+                                                    
+                                                    #--------------------------------------------------------------
+                                                    #esgotado número de vezes que se mostra a resposta:
+
+                                                    elif (escolha == 1 and ver_respostas <= 0):
+                                                        print("Não há mais visualizações de resposta.")
+                                                    
+                                                    #--------------------------------------------------------------
+                                                    #jogo:
+
+                                                    elif(escolha == 0):
+                                                        #escolhendo a posição:
+
+                                                        linha = int(input("\nDigite o número da linha desejada para a primeira peça:"))
+                                                        coluna = int(input("Digite o número da coluna desejada para a primeira peça:"))
+
+                                                        linha2 = int(input("\nDigite o número da linha desejada para a segunda peça:"))
+                                                        coluna2 = int(input("Digite o número da coluna desejada para a segunda peça:"))
+
+                                                        #pq a matriz começa do 0:
+
+                                                        l = linha - 1
+                                                        c = coluna - 1
+
+                                                        l2 = linha2 - 1
+                                                        c2 = coluna2 - 1
+
+                                                        
+
+                                                        #conferindo se as peças são iguais:
+                                                        if (matriz_solucao[l][c] == matriz_solucao[l2][c2]):
+                                                            matriz_visivel[l][c] = matriz_solucao[l][c]
+                                                            matriz_visivel[l2][c2] = matriz_solucao[l2][c2]
+                                                            
+                                                            pontos = pontos + 2
+                                                            
+
+                                                        elif (matriz_visivel[l2][c2] != "#" or matriz_visivel[l][c] != "#" or (l == l2 and c == c2)):
+                                                            print ("Você já selecionou essa posição, por favor escolha outra.\n")
+                                                        
+                                                        else:
+                                                            print ("Não é par. Tente novamente.\n")
+                                                    
+                                                        #se o número de acertos for igual ao número de elementos na matriz o jogo acaba:
+                                                        if(pontos == len(matriz_solucao[l]) * len(matriz_solucao[c])):
+                                                            print("Você finalizou o jogo! Parabens!" )
+                                                            fase = True
+                                                            zerar()
+                                                        
+                                                        mostrar_visivel()
+                                                        
+                                                        else:
+                                                            print("Escolha uma opção válida.")
+                
+                                                else:
+                                                    print("\nEscolha uma opção válida.\n")
+                                                
+                </code></pre>
+            </div>
+        
+
+        <a target="_blank" class="retornar" href="index.html">RETORNAR</a>
+
+          
+        
+    </body>
+</html>
